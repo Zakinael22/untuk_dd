@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Kamu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.5s;
+        }
+
+        .flower {
+            position: absolute;
+            opacity: 0;
+            transform: translateY(50px) scale(0.7);
+            transition: transform 2s ease, opacity 1.5s ease;
+        }
+
+        .flower.animate {
+            transform: translateY(-120px) scale(1);
+            opacity: 1;
+        }
+
+        .stem {
+            width: 6px;
+            height: 80px; /* Memperpanjang tangkai */
+            background-color: green;
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .leaf {
+            width: 15px;
+            height: 30px;
+            background-color: green;
+            position: absolute;
+            border-radius: 50%;
+            transform: rotate(30deg);
+        }
+
+        .leaf-left {
+            bottom: 10px;
+            left: 35%;
+            transform: rotate(-30deg);
+        }
+
+        .leaf-right {
+            bottom: 10px;
+            right: 35%;
+            transform: rotate(30deg);
+        }
+
+        .petal {
+            position: absolute;
+            border-radius: 50%;
+            top: -40px; /* Memperbaiki posisi kelopak */
+            left: 50%;
+            transform-origin: center;
+            clip-path: ellipse(50% 70% at 50% 50%); /* Bentuk kelopak menyerupai mawar */
+        }
+
+        .center {
+            position: absolute;
+            width: 30px; /* Memperbesar pusat bunga */
+            height: 30px; /* Memperbesar pusat bunga */
+            background-color: yellow;
+            border-radius: 50%;
+            top: -70px; /* Memperbaiki posisi pusat bunga */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .love-text {
+            position: absolute;
+            font-size: 40px;
+            color: #ff69b4;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+            font-family: 'Pacifico', cursive; /* Menggunakan font Pacifico */
+        }
+
+        .love-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .heart {
+            width: 100px;
+            height: 100px;
+            background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center center; /* Gambar hati */
+            background-size: contain;
+            position: absolute;
+            opacity: 0;
+            animation: heartBeat 1.5s infinite;
+            left: calc(50% - 50px); /* Mengatur posisi hati di tengah */
+            bottom: 150px; /* Mengatur posisi hati */
+        }
+
+        @keyframes heartBeat {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="btn" onclick="showFlowers()">PENCET DEH !!!</button>
+    <div class="love-text" id="loveText">I LOVE YOU</div>
+    <div class="heart" id="heartAnimation"></div>
+
+    <script>
+        function showFlowers() {
+              const button = document.querySelector('.btn');
+            button.style.opacity = 0; // Menghilangkan tombol setelah ditekan
+
+            const loveText = document.getElementById('loveText');
+            loveText.classList.add('show'); // Tampilkan teks "I love you"
+
+            // Tampilkan animasi hati
+            const heartAnimation = document.getElementById('heartAnimation');
+            heartAnimation.style.opacity = 1; // Menampilkan hati
+
+            const totalFlowers = 25; // Jumlah total bunga yang ingin ditampilkan
+
+            for (let i = 0; i < totalFlowers; i++) {
+                setTimeout(() => {
+                    const flower = document.createElement('div');
+                    flower.classList.add('flower');
+
+                    // Membuat kelopak bunga dengan ukuran dan warna merah
+                    for (let j = 0; j < 10; j++) { // Menambahkan lebih banyak kelopak untuk menyerupai bunga mawar
+                        const petal = document.createElement('div');
+                        petal.classList.add('petal');
+                        const size = Math.random() * 30 + 30; // Ukuran acak antara 30px dan 60px
+                        petal.style.height = `${size}px`;
+                        petal.style.backgroundColor = 'red'; // Warna merah
+                        petal.style.transform = `translate(-50%, -50%) rotate(${(360 / 10) * j}deg)`; // Rotasi kelopak
+                        flower.appendChild(petal);
+                    }
+
+                    // Membuat pusat bunga
+                    const center = document.createElement('div');
+                    center.classList.add('center');
+                    flower.appendChild(center);
+
+                    // Membuat tangkai
+                    const stem = document.createElement('div');
+                    stem.classList.add('stem');
+                    flower.appendChild(stem);
+
+                    // Membuat daun pada tangkai
+                    const leafLeft = document.createElement('div');
+                    leafLeft.classList.add('leaf', 'leaf-left');
+                    flower.appendChild(leafLeft);
+
+                    const leafRight = document.createElement('div');
+                    leafRight.classList.add('leaf', 'leaf-right');
+                    flower.appendChild(leafRight);
+
+                    // Posisi acak sekitar tombol
+                    flower.style.left = `${Math.random() * 100}vw`; // Posisi horizontal acak
+                    flower.style.bottom = `${Math.random() * 50}vh`; // Posisi vertikal acak
+                    flower.style.animationDelay = `${Math.random() * 0.3}s`;
+
+                    document.body.appendChild(flower);
+
+                    setTimeout(() => {
+                        flower.classList.add('animate');
+                    }, 100);
+
+                    // Hapus bunga setelah animasi selesai
+                    flower.addEventListener('transitionend', () => {
+                        flower.remove();
+                    });
+                }, i * 800); // Jeda waktu antar bunga (800ms)
+            }
+        }
+    </script>
+</body>
+</html>
